@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search and Destroy</title>
+
+  <script src="./popup.js"></script>
+</head>
+<body>
+  <h1 style="padding: 16px; padding-bottom: 0;">Search and Destroy</h1>
+  <div id="main-window" style="padding: 16px;">
+    <form id="video-form" style="padding-bottom: 16px;">
+      <span>Block This Video</span>
+      <input id="video-input" type="text">
+    </form>
+    <div>
+      <span style="text-decoration: underline;">Blocked Videos</span>
+      <ul id="blocked-videos-list" style="padding: 0;overflow-y: auto;height: 250px;width: 300px;"></ul> 
+    </div>
+    <div style="justify-content: center;">
+      <p>
+        <span>Download Search and Destroy List</span>
+        <br>
+        <button id="download-button">Download</button>
+      </p>
+      <p>
+        <span>Upload Search and Destroy List</span>
+        <br>
+        <input type="file" id="upload-field"/>
+      </p>
+    </div>
+  </div>
+</body>
+</html>
