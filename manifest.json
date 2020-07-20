@@ -4,7 +4,7 @@
   "description": "To oblivion with you heathen!",
   "content_scripts": [
     {
-      "matches": ["*://www.youtube.com/watch*", "*://www.youtube.com/results*"],
+      "matches": ["*://www.youtube.com/*"],
       "js": ["blockThisVideo.js"],
       "run_at": "document_end"
     }

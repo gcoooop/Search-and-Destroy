@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", init);
 
+// initializes event listeners and the popup list of entries
 function init() {
   chrome.storage.onChanged.addListener(rebuildList);
   
@@ -15,6 +16,7 @@ function init() {
   createList(list);
 }
 
+// creates the popup's list of user entries
 function createList(list) {
   getBlockedVids(data => {
     if (!data.blockedVids) return null;
@@ -29,6 +31,7 @@ function createList(list) {
   return list;
 }
 
+// creates a single list item and styles it
 function createListItem(blockedVid) {
   const li = document.createElement("li");
   const button = document.createElement("button");
@@ -50,12 +53,15 @@ function createListItem(blockedVid) {
   return li;
 }
 
+// resets and rebuilds the popup list
 function rebuildList() {
   const list = document.getElementById("blocked-videos-list");
   list.innerHTML = "";
   createList(list);
 }
 
+// adds the video text arg to storage under the key "blockedVids"
+// can accept an array or string as an argument
 function addToStorage(videoText) {
   getBlockedVids( data => {
     let prev = data.blockedVids || [];
@@ -67,6 +73,7 @@ function addToStorage(videoText) {
   });
 }
 
+// removes a single keyword from storage
 function removeFromStorage(vid) {
   getBlockedVids( data => {
     let prev = data.blockedVids;
@@ -77,10 +84,13 @@ function removeFromStorage(vid) {
   });
 }
 
+// calls chrome storage api with a callback function as an arg
+// returns an object of data from chrome
 function getBlockedVids(fn) {
   return chrome.storage.local.get("blockedVids", fn);
 }
 
+// downloads a CSV file of the blocked keywords from chrome storage
 function downloadCSV() {
   getBlockedVids(data => {
     const blob = new Blob([data.blockedVids], { type: 'text/csv' });
@@ -95,11 +105,13 @@ function downloadCSV() {
   });
 }
 
+// uploads a CSV of keywords and adds to chrome storage
 function uploadCSV(text) {
   const videoTexts = text.split(",");
   addToStorage(videoTexts);
 }
 
+// onChange handler for uploading a file to the input field for a CSV file
 function handleUploadChange(event) {
   const file = event.target.files[0];
   if (file) {
