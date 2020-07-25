@@ -86,8 +86,9 @@ function blockVideosByQuerySelector(cssSelectorForRemoval, cssSelectorForTest) {
         const blockedVid = blockedVids[j].toLowerCase();
         if ( eleText.toLowerCase().includes(blockedVid) ) {
           videoEle.style.display = "none";
+          break;
         }
-      }
+      } 
     }
 
   }
@@ -101,11 +102,31 @@ function blockElementsByQuerySelector(cssSelector) {
   }
 }
 
-setInterval(blockTheseVideos, 250)
+function unblockElementsByQuerySelector(cssSelectorForUnblock) {
+  const eles = document.querySelectorAll(cssSelectorForUnblock);
+  for (let i = 0; i < eles.length; i++) {
+    const ele = eles[i];
+    ele.style.removeProperty("display");
+  }
+}
 
-function refreshExt() {
-  getBlockedVids();
-  blockTheseVideos();
+let blockInterval = setInterval(blockTheseVideos, 250)
+
+async function refreshExt() {
+  await getBlockedVids();
+  clearInterval(blockInterval);
+  const url = window.location.href;
+  if (url.includes("results")) {
+    // search result videos
+    unblockElementsByQuerySelector( results.video.ele );
+    unblockElementsByQuerySelector( results.channel.ele );
+  } else if (url.includes("watch")) {
+    // related videos
+    unblockElementsByQuerySelector( watch.video.ele );
+  } else {
+    throw `URL not accounted for: ${url}`;
+  }
+  blockInterval = setInterval(blockTheseVideos, 250);
 }
 
 chrome.storage.onChanged.addListener(refreshExt);
