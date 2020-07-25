@@ -104,7 +104,6 @@ function blockElementsByQuerySelector(cssSelector) {
 setInterval(blockTheseVideos, 250)
 
 function refreshExt() {
-  console.log("here")
   getBlockedVids();
   blockTheseVideos();
 }
