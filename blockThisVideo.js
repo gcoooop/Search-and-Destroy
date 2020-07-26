@@ -37,7 +37,7 @@ const elesForBlock = {
     "promoted_video": "ytd-promoted-video-renderer",
     "search_suggestions": "ytd-horizontal-card-list-renderer",
     "radio": "ytd-radio-renderer",
-    "shelf": "ytd-shelf-renderer",
+    "related_search": "ytd-shelf-renderer",
     "playlist": "ytd-playlist-renderer",
     "video": {
       "ele": "ytd-video-renderer",
@@ -85,7 +85,7 @@ function blockTheseVideos () {
     blockElementsByQuerySelector( results.promoted_video );
     blockElementsByQuerySelector( results.search_suggestions );
     blockElementsByQuerySelector( results.radio );
-    // blockElementsByQuerySelector( results.shelf );
+    blockElementsByQuerySelector( results.related_search );
     blockElementsByQuerySelector( results.playlist );
     blockVideosByQuerySelector( results.video.ele, results.video.channel_name );
     blockVideosByQuerySelector( results.video.ele, results.video.title );
