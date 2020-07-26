@@ -1,3 +1,36 @@
+// init counter
+const node = document.createElement("div");
+const title = document.createElement("h4");
+const count = document.createElement("span");
+
+node.appendChild(title);
+node.appendChild(count);
+document.body.appendChild(node);
+
+node.style.zIndex = "9999";
+node.style.position = "fixed";
+node.style.bottom = "16px";
+node.style.left = "16px";
+node.style.padding = "16px";
+node.style.background = "white";
+node.style.border = "1px solid black";
+node.style.textAlign = "center";
+title.style.marginBottom = "8px";
+
+title.innerText = "Destroy Counter";
+count.innerText = "0";
+
+function updateDestroyCount(zero) {
+  if (zero) {
+    count.innerText = "0";
+  } else {
+    count.innerText = parseInt(count.innerText) + 1;
+  }
+}
+
+document.addEventListener("yt-navigate-start", () => updateDestroyCount(true));
+
+// block logic
 const elesForBlock = {
   "homepage": "#primary > ytd-rich-grid-renderer",
   "results": {
@@ -85,7 +118,9 @@ function blockVideosByQuerySelector(cssSelectorForRemoval, cssSelectorForTest) {
       for (let j = 0; j < blockedVids.length; j++) {
         const blockedVid = blockedVids[j].toLowerCase();
         if ( eleText.toLowerCase().includes(blockedVid) ) {
+          if (videoEle.style.display == "none") break;
           videoEle.style.display = "none";
+          updateDestroyCount(false);
           break;
         }
       } 
@@ -126,6 +161,7 @@ async function refreshExt() {
   } else {
     throw `URL not accounted for: ${url}`;
   }
+  updateDestroyCount(true);
   blockInterval = setInterval(blockTheseVideos, 250);
 }
 
