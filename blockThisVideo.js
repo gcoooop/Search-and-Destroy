@@ -26,6 +26,12 @@ function updateDestroyCount(zero) {
   } else {
     count.innerText = parseInt(count.innerText) + 1;
   }
+
+  if (settings["destroy-counter-toggle"]) {
+    node.style.removeProperty("display");
+  } else {
+    node.style.display = "none";
+  }
 }
 
 document.addEventListener("yt-navigate-start", () => updateDestroyCount(true));
@@ -65,12 +71,22 @@ const elesForBlock = {
   }
 }
 
+let settings = null;
+async function getSettings() {
+  await chrome.storage.local.get("settings", data => {
+    settings = data.settings
+  });
+}
+getSettings();
+
 const { homepage, results, watch } = elesForBlock;
 let blockedVids = null;
 async function getBlockedVids() {
   await chrome.storage.local.get("blockedVids", data => {
     blockedVids = data.blockedVids || [];
-    blockedVids = blockedVids.concat("recommended for you");
+    if (settings["recommended-videos-toggle"]) {
+      blockedVids = blockedVids.concat("recommended for you");
+    }
   });
 }
 getBlockedVids();
@@ -79,14 +95,23 @@ function blockTheseVideos () {
   const url = window.location.href;
   if (url == "https://www.youtube.com/") {
     const page = document.querySelector( homepage );
-    if (page) page.innerHTML = "Bye bye homepage!";
+    if (settings["homepage-toggle"]) {
+      if (page) page.style.display = "none";
+    } else {
+      if (page) page.style.removeProperty("display");
+    }
   } else if (url.includes("results")) {
     // search result videos
     blockElementsByQuerySelector( results.promoted_video );
-    blockElementsByQuerySelector( results.search_suggestions );
     blockElementsByQuerySelector( results.radio );
-    blockElementsByQuerySelector( results.related_search );
     blockElementsByQuerySelector( results.playlist );
+    if (settings["search-suggestions-toggle"]) {
+      blockElementsByQuerySelector( results.search_suggestions );
+      blockElementsByQuerySelector( results.related_search );
+    } else {
+      unblockElementsByQuerySelector( results.search_suggestions );
+      unblockElementsByQuerySelector( results.related_search );
+    }
     blockVideosByQuerySelector( results.video.ele, results.video.channel_name );
     blockVideosByQuerySelector( results.video.ele, results.video.title );
     blockVideosByQuerySelector( results.channel.ele, results.channel.channel_name );
@@ -100,7 +125,7 @@ function blockTheseVideos () {
     blockVideosByQuerySelector( watch.video.ele, watch.video.channel_name );
     blockVideosByQuerySelector( watch.video.ele, watch.video.title );
     blockVideosByQuerySelector( watch.video.ele, watch.video.meta );
-    toggleOffAutoplay()
+    if (settings["autoplay-toggle"]) toggleOffAutoplay();
   } else {
     throw `URL not accounted for: ${url}`;
   }
@@ -148,10 +173,13 @@ function unblockElementsByQuerySelector(cssSelectorForUnblock) {
 let blockInterval = setInterval(blockTheseVideos, 250)
 
 async function refreshExt() {
+  await getSettings();
   await getBlockedVids();
   clearInterval(blockInterval);
   const url = window.location.href;
-  if (url.includes("results")) {
+  if (url == "https://www.youtube.com/") {
+
+  } else if (url.includes("results")) {
     // search result videos
     unblockElementsByQuerySelector( results.video.ele );
     unblockElementsByQuerySelector( results.channel.ele );

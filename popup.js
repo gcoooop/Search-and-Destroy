@@ -13,6 +13,15 @@ function init() {
   downloadButton.addEventListener("click", downloadCSV);
   uploadField.addEventListener("change", handleUploadChange);
   createList(list);
+
+  const toggles = document.querySelectorAll("input[type='checkbox']");
+  displaySettings(toggles);
+  toggles.forEach(toggle => toggle.addEventListener("change", handleToggleClick));
+
+  const tabButtons = document.querySelectorAll(".tabs button");
+  tabButtons.forEach(tabButton => tabButton.addEventListener( "click", 
+    event => handleTabClick(event, tabButton.id.replace("-button","")) 
+  ));
 }
 
 function createList(list) {
@@ -114,4 +123,60 @@ function handleUploadChange(event) {
       alert(fr.error);
     }
   }
+}
+
+function handleToggleClick(event) {
+  const key = event.target.id;
+  const bool = event.target.checked;
+  updateSettings(key, bool);
+}
+
+function getSettings(fn) {
+  chrome.storage.local.get("settings", fn);
+}
+
+async function initializeSettings(toggles) {
+  // should only run once on the very first time the extension is used
+  const settings = {};
+  toggles.forEach(toggle => {
+    settings[toggle.id] = true;
+  });
+  await chrome.storage.local.set({ settings }, () => console.log("Initialized settings object"));
+  return settings;
+}
+
+function updateSettings(key, bool) {
+  getSettings(data => {
+    const settings = data.settings;
+    settings[key] = bool;
+    chrome.storage.local.set({ settings }, () => console.log(`${key} set to ${bool}`));
+  });
+}
+
+function displaySettings(toggles) {
+  getSettings(data => {
+    const settings = data.settings || initializeSettings(toggles);
+    toggles.forEach(toggle => {
+      if ( settings.hasOwnProperty(toggle.id) ) {
+        const bool = settings[toggle.id];
+        toggle.checked = bool;
+      } else {
+        updateSettings(toggle.id, true);
+        toggle.checked = true;
+      }
+    });
+  });
+}
+
+function handleTabClick(event, id) {
+  const tabcontents = Array.from(document.getElementsByClassName("tabcontent"));
+  const tabButtons = Array.from(document.querySelectorAll(".tabs button"));
+  tabcontents.forEach(tabcontent => {
+    tabcontent.style.display = "none";
+  });
+  tabButtons.forEach(button => {
+    button.className = "";
+  });
+  document.getElementById(id).style.display = "block";
+  event.target.className += "active";
 }

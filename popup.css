@@ -1,0 +1,38 @@
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+.tabs button {
+  flex-grow: 1;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 8px;
+  transition: 0.3s;
+}
+
+.tabs button:hover {
+  background-color: #ddd;
+}
+
+.tabs button.active {
+  background-color: #ccc;
+}
+
+.tabcontent {
+  height: 300px;
+  width: 300px;
+  display: none;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+ul {
+  height: 250px;
+}
