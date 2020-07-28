@@ -1,40 +1,63 @@
-// init counter
-const node = document.createElement("div");
-const title = document.createElement("h4");
-const count = document.createElement("span");
-
-node.appendChild(title);
-node.appendChild(count);
-document.body.appendChild(node);
-
-node.style.zIndex = "9999";
-node.style.position = "fixed";
-node.style.bottom = "16px";
-node.style.left = "16px";
-node.style.padding = "16px";
-node.style.background = "white";
-node.style.border = "1px solid black";
-node.style.textAlign = "center";
-title.style.marginBottom = "8px";
-
-title.innerText = "Destroy Counter";
-count.innerText = "0";
+let settings = null;
+function getSettings() {
+  chrome.storage.local.get("settings", data => {
+    settings = data.settings;
+  });
+}
+getSettings();
 
 function updateDestroyCount(zero) {
-  if (zero) {
-    count.innerText = "0";
-  } else {
-    count.innerText = parseInt(count.innerText) + 1;
-  }
-
-  if (settings["destroy-counter-toggle"]) {
-    node.style.removeProperty("display");
-  } else {
-    node.style.display = "none";
-  }
+  chrome.storage.local.get("settings", data => {
+    const counterEle = document.querySelector("#destroy-counter");
+    const count = document.querySelector("#destroy-counter > span");
+    if (zero) {
+      count.innerText = "0";
+    } else {
+      count.innerText = parseInt(count.innerText) + 1;
+    }
+  
+    if (data.settings["destroy-counter-toggle"]) {
+      counterEle.style.removeProperty("display");
+    } else {
+      counterEle.style.display = "none";
+    }
+  });
 }
 
-document.addEventListener("yt-navigate-start", () => updateDestroyCount(true));
+function initCounter() {
+  chrome.storage.local.get("settings", data => {
+    const counterEle = document.createElement("div");
+    const title = document.createElement("h4");
+    const count = document.createElement("span");
+  
+    counterEle.appendChild(title);
+    counterEle.appendChild(count);
+    document.body.appendChild(counterEle);
+  
+    counterEle.id = "destroy-counter";
+
+    counterEle.style.zIndex = "9999";
+    counterEle.style.position = "fixed";
+    counterEle.style.bottom = "16px";
+    counterEle.style.left = "16px";
+    counterEle.style.padding = "16px";
+    counterEle.style.background = "white";
+    counterEle.style.border = "1px solid black";
+    counterEle.style.textAlign = "center";
+    title.style.marginBottom = "8px";
+    if (data.settings["destroy-counter-toggle"]) {
+      counterEle.style.removeProperty("display");
+    } else {
+      counterEle.style.display = "none";
+    }
+  
+    title.innerText = "Destroy Counter";
+    count.innerText = "0";
+  
+    document.addEventListener("yt-navigate-start", () => updateDestroyCount(true));
+  });
+}
+initCounter();
 
 // block logic
 const elesForBlock = {
@@ -70,14 +93,6 @@ const elesForBlock = {
     }
   }
 }
-
-let settings = null;
-async function getSettings() {
-  await chrome.storage.local.get("settings", data => {
-    settings = data.settings
-  });
-}
-getSettings();
 
 const { homepage, results, watch } = elesForBlock;
 let blockedVids = null;
@@ -172,9 +187,9 @@ function unblockElementsByQuerySelector(cssSelectorForUnblock) {
 
 let blockInterval = setInterval(blockTheseVideos, 250)
 
-async function refreshExt() {
-  await getSettings();
-  await getBlockedVids();
+function refreshExt() {
+  getSettings();
+  getBlockedVids();
   clearInterval(blockInterval);
   const url = window.location.href;
   if (url == "https://www.youtube.com/") {
