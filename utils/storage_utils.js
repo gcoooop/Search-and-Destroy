@@ -1,12 +1,9 @@
-async function getBlockedVids() {
-  const result = await chrome.storage.local.get("blockedVids");
-  return result.blockedVids || [];
+function getStorage(fn) {
+  chrome.storage.local.get(null, result => {
+    fn(result);
+  });
 };
 
-function addStorageListener(key, fn) {
-  chrome.storage.onChanged.addListener(changes => {
-    if (changes[key]) {
-      fn(changes[key]);
-    }
-  });
+function addStorageListener(fn) {
+  chrome.storage.onChanged.addListener(fn);
 };

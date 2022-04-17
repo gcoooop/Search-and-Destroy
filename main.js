@@ -1,21 +1,19 @@
 const destroyerEngine = new TargetingEngine();
 const reconstructorEngine = new TargetingEngine();
-let blockedVids = new DynamicArray();
 
 const homepageDestroyer = new PageTargeter("https://www.youtube.com/", { exact: true });
-const resultsDestroyer = new PageTargeter("results");
-const watchDestroyer = new PageTargeter("watch");
-// need an OR mechanism
-const channelDestroyer = new PageTargeter("channel"); 
+const resultsDestroyer = new PageTargeter("/results");
+const watchDestroyer = new PageTargeter("/watch");
+const channelDestroyer = new PageTargeter(["/channel", "/user", "/u", "/c"]); 
 const sndReconstructor = new PageTargeter();
 
 // homepage
-homepageDestroyer.add(new ComponentTargeter("#primary > ytd-rich-grid-renderer", Operation.block));
+homepageDestroyer.add(new ComponentTargeter("#primary > ytd-rich-grid-renderer", Operation.block, settings.get("homepage-toggle")));
 
 // results
 resultsDestroyer.add([
-  new ComponentTargeter("ytd-shelf-renderer", Operation.delete),
-  new ComponentTargeter("ytd-horizontal-card-list-renderer", Operation.delete),
+  new ComponentTargeter("ytd-shelf-renderer", Operation.delete, settings.get("search-suggestions-toggle")),
+  new ComponentTargeter("ytd-horizontal-card-list-renderer", Operation.delete, settings.get("search-suggestions-toggle")),
   new ComponentTargeter("ytd-radio-renderer", Operation.delete),
   new ComponentTargeter("ytd-playlist-renderer", Operation.delete),
   new ComponentTargeter("ytd-promoted-sparkles-web-renderer", Operation.delete),
@@ -33,7 +31,8 @@ watchDestroyer.add([
 
 // channel
 channelDestroyer.add([
-  new ComponentTargeter("ytd-channel-video-player-renderer", Operation.delete)
+  new ComponentTargeter("video", Operation.pause),
+  new ComponentTargeter("ytd-channel-video-player-renderer", Operation.block)
 ]);
 
 // reconstructor
@@ -49,14 +48,11 @@ destroyerEngine.start();
 
 reconstructorEngine.add(sndReconstructor);
 
-addStorageListener("blockedVids", changes => {
-  blockedVids.replace(changes.newValue);
-  reconstructorEngine.execute();
+initializeGlobals(() => {
   destroyerEngine.execute();
 });
 
-(async () => {
-  const storedKeywords = await getBlockedVids();
-  blockedVids.concat(storedKeywords);
+startGlobalListeners(() => {
+  reconstructorEngine.execute();
   destroyerEngine.execute();
-})();
+});

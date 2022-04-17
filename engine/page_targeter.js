@@ -1,6 +1,10 @@
 class PageTargeter {
-  constructor(keywordOrUrl = "", options = {}) {
-    this.keywordOrUrl = keywordOrUrl;
+  constructor(keywordsOrUrls = [""], options = {}) {
+    if (Array.isArray(keywordsOrUrls)) {
+      this.keywordsOrUrls = keywordsOrUrls;
+    } else {
+      this.keywordsOrUrls = [keywordsOrUrls];
+    }
     this.options = options;
     this.componentTargeters = [];
   }
@@ -20,10 +24,12 @@ class PageTargeter {
   }
 
   isPageMatch() {
-    if (this.options.exact) {
-      return exactlyMatchesPageUrl(this.keywordOrUrl);
-    } else {
-      return matchesPageUrl(this.keywordOrUrl);
-    }
+    return this.keywordsOrUrls.some(keywordOrUrl => {
+      if (this.options.exact) {
+        return exactlyMatchesPageUrl(keywordOrUrl);
+      } else {
+        return matchesPageUrl(keywordOrUrl);
+      }
+    });
   }
 }
