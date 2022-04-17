@@ -1,7 +1,6 @@
 class DynamicArray {
   constructor(items = []) {
     this.array = items;
-    
   }
 
   push(item) {

@@ -1,6 +1,3 @@
-const pageUrl = window.location.href;
-const sndDestroyedAttr = "snd-destroyed";
-
 function getElementsForSelector(cssSelector) {
   return Array.from(document.querySelectorAll(cssSelector));
 };
