@@ -20,4 +20,8 @@ class Operation {
   static delete(eles) {
     eles.forEach(deleteElement);
   }
+
+  static pause(eles) {
+    eles.forEach(pauseElement)
+  }
 }

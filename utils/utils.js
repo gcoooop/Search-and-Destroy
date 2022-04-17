@@ -15,7 +15,11 @@ function unhideElement(ele) {
 
 function deleteElement(ele) {
   ele.remove();
-}
+};
+
+function pauseElement(ele) {
+  ele.pause();
+};
 
 function testEleForText(ele, text) {
   return ele.innerText.toLowerCase().includes(text.toLowerCase());
@@ -48,8 +52,8 @@ function throttle(timeout) {
   return (fn, ...args) => {
     if (!isTimedout) {
       isTimedout = true;
-      fn(...args);
       setTimeout(() => {
+        fn(...args);
         isTimedout = false;
       }, timeout);
     }

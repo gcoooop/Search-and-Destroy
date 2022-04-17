@@ -1,12 +1,15 @@
 class ComponentTargeter {
-  constructor(cssSelector, operation) {
+  constructor(cssSelector, operation, conditionFn = () => true) {
     this.cssSelector = cssSelector;
     this.operation = operation;
+    this.conditionFn = conditionFn;
   }
 
   execute() {
-    const eles = this.getElements();
-    this.operation(eles);
+    if (this.conditionFn()) {
+      const eles = this.getElements();
+      this.operation(eles);
+    }
   };
 
   getElements() {

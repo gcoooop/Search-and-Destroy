@@ -18,11 +18,10 @@ class TargetingEngine {
   }
 
   start() {
-    // const throttleFn = throttle(250);
+    const throttleFn = throttle(1000);
     this.observer = new MutationObserver((mutationsList, observer) => {
-      this.execute()
-      // throttle causes an issue where the final fn execution does not get called which results in waiting for an additional mutation event
-      // throttleFn(this.execute.bind(this));
+      // this.execute()
+      throttleFn(this.execute.bind(this));
     });
     this.observer.observe(this.ytdApp, { childList: true, subtree: true });
   }
