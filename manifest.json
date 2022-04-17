@@ -8,7 +8,7 @@
   "content_scripts": [
     {
       "matches": ["*://www.youtube.com/*"],
-      "js": ["./utils/storage_utils.js", "./utils/utils.js", "./engine/dynamic_array.js", "./engine/settings.js", "./engine/operation.js", "./engine/component_targeter.js", "./engine/page_targeter.js", "./engine/targeting_engine.js", "main.js"],
+      "js": ["./utils/storage_utils.js", "./utils/utils.js", "./global_utils/dynamic_array.js", "./global_utils/settings.js", "./global_utils/globals.js", "./engine/operation.js", "./engine/component_targeter.js", "./engine/page_targeter.js", "./engine/targeting_engine.js", "main.js"],
       "css": ["main.css"],
       "run_at": "document_end"
     }
