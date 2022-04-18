@@ -18,13 +18,9 @@ function pauseElement(ele) {
   ele.pause();
 };
 
-function testEleForText(ele, text) {
-  return ele.innerText.toLowerCase().includes(text.toLowerCase());
-};
-
 function eleContainsText(inputText) {
   return ele => {
-    return testEleForText(ele, inputText);
+    return includesInsensitive(ele.innerText, inputText);
   };
 };
 
@@ -44,6 +40,18 @@ function matchesPageUrl(keyword) {
   return pageUrl.includes(keyword);
 };
 
+function isEqualInsensitive(string1, string2) {
+  return string1.toUpperCase() === string2.toUpperCase();
+};
+
+function includesInsensitive(strOrArr, string) {
+  if (Array.isArray(strOrArr)) {
+    return strOrArr.some(item => isEqualInsensitive(item, string));
+  } else { 
+    return string1.toUpperCase().includes(string2.toUpperCase());
+  }
+};
+
 function throttle(timeout) {
   let isTimedout = false;
   return (fn, ...args) => {
@@ -55,4 +63,16 @@ function throttle(timeout) {
       }, timeout);
     }
   };
+};
+
+function toArray(input) {
+  if (Array.isArray(input)) {
+    return input;
+  } else {
+    return [input];
+  }
+};
+
+function concatUnique(array1, array2) {
+  return array1.concat(array2.filter(item => !includesInsensitive(array1, item)));
 };
