@@ -8,12 +8,12 @@ const channelDestroyer = new PageTargeter(["/channel", "/user", "/u", "/c"]);
 const sndReconstructor = new PageTargeter();
 
 // homepage
-homepageDestroyer.add(new ComponentTargeter("#primary > ytd-rich-grid-renderer", Operation.block, settings.get("homepage-toggle")));
+homepageDestroyer.add(new ComponentTargeter("#primary > ytd-rich-grid-renderer", Operation.block, settings.get("homepageToggle")));
 
 // results
 resultsDestroyer.add([
-  new ComponentTargeter("ytd-shelf-renderer", Operation.delete, settings.get("search-suggestions-toggle")),
-  new ComponentTargeter("ytd-horizontal-card-list-renderer", Operation.delete, settings.get("search-suggestions-toggle")),
+  new ComponentTargeter("ytd-shelf-renderer", Operation.delete, settings.get("searchSuggestionsToggle")),
+  new ComponentTargeter("ytd-horizontal-card-list-renderer", Operation.delete, settings.get("searchSuggestionsToggle")),
   new ComponentTargeter("ytd-radio-renderer", Operation.delete),
   new ComponentTargeter("ytd-playlist-renderer", Operation.delete),
   new ComponentTargeter("ytd-promoted-sparkles-web-renderer", Operation.delete),

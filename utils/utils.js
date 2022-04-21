@@ -18,6 +18,15 @@ function pauseElement(ele) {
   ele.pause();
 };
 
+function addClassName(ele, className) {
+  ele.className += ` ${className}`;
+};
+
+function removeClassName(ele, className) {
+  ele.className = ele.className.replace(` ${className}`, "");
+  ele.className = ele.className.replace(className, "");
+};
+
 function eleContainsText(inputText) {
   return ele => {
     return includesInsensitive(ele.innerText, inputText);
@@ -48,7 +57,7 @@ function includesInsensitive(strOrArr, string) {
   if (Array.isArray(strOrArr)) {
     return strOrArr.some(item => isEqualInsensitive(item, string));
   } else { 
-    return string1.toUpperCase().includes(string2.toUpperCase());
+    return strOrArr.toUpperCase().includes(string.toUpperCase());
   }
 };
 

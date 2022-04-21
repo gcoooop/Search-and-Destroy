@@ -21,4 +21,8 @@ class DynamicArray {
   some(fn) {
     return this.array.some(fn);
   }
+
+  sort() {
+    return this.array.sort();
+  }
 }

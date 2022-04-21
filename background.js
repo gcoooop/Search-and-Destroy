@@ -3,7 +3,12 @@ chrome.storage.local.get(null, result => {
   if (!Object.keys(result).length) {
     chrome.storage.local.set({
       blockedVids: [],
-      settings: {}
+      settings: {
+        disableAutoplay: true,
+        disableHomepage: true,
+        disableSearchSuggestions: true,
+        disableDestroyCounter: true
+      }
     });
   }
 });
