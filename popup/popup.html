@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search and Destroy</title>
+
+  <link rel="stylesheet" href="popup.css">
+  <script src="../utils/storage_utils.js"></script>
+  <script src="../utils/utils.js"></script>
+  <script src="../global_utils/dynamic_array.js"></script>
+  <script src="../global_utils/settings.js"></script>
+  <script src="../global_utils/globals.js"></script>
+  <script src="./event_handlers.js"></script>
+  <script src="./popup.js"></script>
+</head>
+<body>
+  <div style="padding: 16px;">
+    <h1>Search and Destroy</h1>
+    <div class="tabs">
+      <button class="tab-button active" for="commandCenter">Command Center</button>
+      <button class="tab-button" for="userSettings">Settings</button>
+      <button class="tab-button" for="importExport">Import/Export</button>
+    </div>
+    <div class="tab-content active" id="commandCenter">
+      <form id="videoForm" style="padding-bottom: 8px;">
+        <span>Block This Video</span>
+        <input id="video-input" type="text" autofocus>
+      </form>
+      <div>
+        <span style="text-decoration: underline;">Blocked Videos</span>
+        <ul id="blockedVideosList" style="padding: 0;overflow-y: auto;"></ul>
+      </div>
+    </div>
+    <div class="tab-content" id="userSettings">
+      <label>
+        <input type="checkbox" class="settings-toggle" id="disableAutoplay">
+        Always Disable Autoplay
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" class="settings-toggle" id="disableHomepage">
+        Hide Homepage
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" class="settings-toggle" id="disableSearchSuggestions">
+        Hide Search Suggestions
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" class="settings-toggle" id="disableDestroyCounter">
+        Hide Destroy Counter Sticky
+      </label>
+    </div>
+    <div class="tab-content" id="importExport" style="justify-content: center;">
+      <p>
+        <span>Download Search and Destroy List</span>
+        <br>
+        <button id="downloadButton">Download</button>
+      </p>
+      <p>
+        <span>Upload Search and Destroy List</span>
+        <br>
+        <input type="file" id="uploadInput"/>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

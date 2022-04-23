@@ -6,7 +6,7 @@
   background-color: #f1f1f1;
 }
 
-.tabs button {
+.tab-button {
   flex-grow: 1;
   background-color: inherit;
   border: none;
@@ -16,15 +16,16 @@
   transition: 0.3s;
 }
 
-.tabs button:hover {
+.tab-button:hover {
   background-color: #ddd;
 }
 
-.tabs button.active {
+.tab-button.active {
   background-color: #ccc;
 }
 
-.tabcontent {
+.tab-content {
+  display: none;
   height: 300px;
   width: 300px;
   display: none;
@@ -33,6 +34,20 @@
   border-top: none;
 }
 
+.tab-content.active {
+  display: block;
+}
+
 ul {
   height: 250px;
+  list-style: none;
+}
+
+.blocked-vid-item button {
+  cursor: pointer;
+  border: none;
+  background-color: white;
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
 }

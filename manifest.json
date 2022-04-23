@@ -1,25 +1,29 @@
 {
   "name": "Search and Destroy",
-  "version": "1.0",
+  "version": "2.0",
   "description": "To oblivion with you heathen!",
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["*://www.youtube.com/*"],
-      "js": ["blockThisVideo.js"],
+      "js": ["./global_utils/dynamic_array.js", "./global_utils/settings.js", "./global_utils/globals.js", "./utils/storage_utils.js", "./utils/utils.js", "./engine/counter.js", "./engine/operation.js", "./engine/component_targeter.js", "./engine/page_targeter.js", "./engine/targeting_engine.js", "main.js"],
+      "css": ["main.css"],
       "run_at": "document_end"
     }
   ],
-  "browser_action": {
-    "default_popup": "popup.html"
+  "action": {
+    "default_popup": "./popup/popup.html"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "content_security_policy": "script-src 'self' https://example.com; object-src 'self'",
-  "manifest_version": 2
+  "manifest_version": 3
 }
