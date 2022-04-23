@@ -8,12 +8,11 @@ const channelDestroyer = new PageTargeter(["/channel", "/user", "/u", "/c"]);
 const sndReconstructor = new PageTargeter();
 
 // homepage
-homepageDestroyer.add(new ComponentTargeter("#primary > ytd-rich-grid-renderer", Operation.block, settings.get("homepageToggle")));
-
+homepageDestroyer.add(new ComponentTargeter("#primary > ytd-rich-grid-renderer", Operation.block, settings.get(HOMEPAGE_SETTING_NAME)));
 // results
 resultsDestroyer.add([
-  new ComponentTargeter("ytd-shelf-renderer", Operation.delete, settings.get("searchSuggestionsToggle")),
-  new ComponentTargeter("ytd-horizontal-card-list-renderer", Operation.delete, settings.get("searchSuggestionsToggle")),
+  new ComponentTargeter("ytd-shelf-renderer", Operation.delete, settings.get(SEARCH_SUGGESTIONS_SETTING_NAME)),
+  new ComponentTargeter("ytd-horizontal-card-list-renderer", Operation.delete, settings.get(SEARCH_SUGGESTIONS_SETTING_NAME)),
   new ComponentTargeter("ytd-radio-renderer", Operation.delete),
   new ComponentTargeter("ytd-playlist-renderer", Operation.delete),
   new ComponentTargeter("ytd-promoted-sparkles-web-renderer", Operation.delete),
@@ -36,7 +35,7 @@ channelDestroyer.add([
 ]);
 
 // reconstructor
-sndReconstructor.add(new ComponentTargeter(`[${sndDestroyedAttr}]`, Operation.unblock))
+sndReconstructor.add(new ComponentTargeter(`[${SND_DESTROYED_ATTR}]`, Operation.unblock))
 
 destroyerEngine.add([
   homepageDestroyer,
@@ -55,4 +54,5 @@ initializeGlobals(() => {
 startGlobalListeners(() => {
   reconstructorEngine.execute();
   destroyerEngine.execute();
+  Counter.update();
 });

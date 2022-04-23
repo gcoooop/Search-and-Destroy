@@ -3,11 +3,11 @@ function getElementsForSelector(cssSelector) {
 };
 
 function hideElement(ele) {
-  ele.setAttribute(sndDestroyedAttr, true);
+  ele.setAttribute(SND_DESTROYED_ATTR, true);
 };
 
 function unhideElement(ele) {
-  ele.removeAttribute(sndDestroyedAttr);
+  ele.removeAttribute(SND_DESTROYED_ATTR);
 };
 
 function deleteElement(ele) {
@@ -42,11 +42,11 @@ function eleContainsTextInArray(inputTextArray) {
 };
 
 function exactlyMatchesPageUrl(url) {
-  return pageUrl === url;
+  return getPageUrl() === url;
 };
 
 function matchesPageUrl(keyword) {
-  return pageUrl.includes(keyword);
+  return getPageUrl().includes(keyword);
 };
 
 function isEqualInsensitive(string1, string2) {

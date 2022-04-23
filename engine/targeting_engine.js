@@ -19,9 +19,12 @@ class TargetingEngine {
 
   start() {
     const throttleFn = throttle(1000);
+    Counter.initialize();
     this.observer = new MutationObserver((mutationsList, observer) => {
-      // this.execute()
-      throttleFn(this.execute.bind(this));
+      throttleFn(() => {
+        this.execute.call(this);
+        Counter.update();
+      });
     });
     this.observer.observe(this.ytdApp, { childList: true, subtree: true });
   }
